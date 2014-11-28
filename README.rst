@@ -1,8 +1,8 @@
 Introduction
 ==============
-.. image:: https://travis-ci.org/iguananaut/d2to1.png?branch=master
+.. image:: https://travis-ci.org/embray/d2to1.png?branch=master
    :alt: travis build status
-   :target: https://travis-ci.org/iguananaut/d2to1
+   :target: https://travis-ci.org/embray/d2to1
 
 d2to1 (the 'd' is for 'distutils') allows using distutils2-like setup.cfg files
 for a package's metadata with a distribute/setuptools setup.py script.  It
