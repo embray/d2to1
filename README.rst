@@ -107,4 +107,4 @@ Caveats
   meantime, package_data and data_files may still be used under the [files]
   section of setup.cfg.
 
-.. _distutils2 documentation: http://distutils2.notmyidea.org/setupcfg.html
+.. _distutils2 documentation: http://alexis.notmyidea.org/distutils2/setupcfg.html
