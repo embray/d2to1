@@ -41,32 +41,50 @@ setup.py script.  For details on writing the setup.cfg, see the `distutils2
 documentation`_.  A simple sample can be found in d2to1's own setup.cfg (it
 uses its own machinery to install itself)::
 
- [metadata]
- name = d2to1
- version = 0.1.1
- author = Erik M. Bray
- author-email = embray at stsci.edu
- summary = Allows using distutils2-like setup.cfg files for a package's metadata
-  with a distribute/setuptools setup.py
- description-file = README
- license = BSD
- requires-dist = setuptools
- classifier =
-     Development Status :: 4 - Beta
-     Environment :: Plugins
-     Framework :: Setuptools Plugin
-     Intended Audience :: Developers
-     License :: OSI Approved :: BSD License
-     Operating System :: OS Independent
-     Programming Language :: Python
-     Topic :: Software Development :: Build Tools
-     Topic :: Software Development :: Libraries :: Python Modules
-     Topic :: System :: Archiving :: Packaging
- keywords =
-     setup
-     distutils
- [files]
- packages = d2to1
+    [metadata]
+    name = d2to1
+    version = 0.2.12
+    author = Erik M. Bray
+    author-email = embray@stsci.edu
+    summary = Allows using distutils2-like setup.cfg files for a package's metadata with a distribute/setuptools setup.py
+    description-file =
+        README.rst
+        CHANGES.rst
+    home-page = http://pypi.python.org/pypi/d2to1
+    requires-dist = setuptools
+    classifier = 
+        Development Status :: 5 - Production/Stable
+        Environment :: Plugins
+        Framework :: Setuptools Plugin
+        Intended Audience :: Developers
+        License :: OSI Approved :: BSD License
+        Operating System :: OS Independent
+        Programming Language :: Python
+        Programming Language :: Python :: 3
+        Topic :: Software Development :: Build Tools
+        Topic :: Software Development :: Libraries :: Python Modules
+        Topic :: System :: Archiving :: Packaging
+
+    [files]
+    packages =
+        d2to1
+        d2to1.extern
+    extra_files =
+        CHANGES.rst
+        LICENSE
+        ez_setup.py
+
+    [backwards_compat]
+    zip-safe = False
+    tests-require = nose
+
+    [entry_points]
+    distutils.setup_keywords = 
+        d2to1 = d2to1.core:d2to1
+    zest.releaser.prereleaser.middle = 
+        d2_version = d2to1.zestreleaser:prereleaser_middle
+    zest.releaser.postreleaser.middle = 
+        d2_version = d2to1.zestreleaser:postreleaser_middle
 
 The minimal setup.py should look something like this::
 
@@ -94,7 +112,7 @@ but it should be noted that they will be clobbered by any options in the
 setup.cfg file.
 
 Caveats
-=========
+=======
 - The requires-dist option in setup.cfg is implemented through the
   distribute/setuptools install_requires option, rather than the broken
   "requires" keyword in normal distutils.
