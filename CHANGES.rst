@@ -19,10 +19,7 @@ Changes
 
 - Upgraded to latest ``ez_setup.py`` so that the most up to date version
   of setuptools will be correctly bootstrapped in the rare cases that it
-  is needed.  Note: This ``ez_setup.py`` does not work at all on Python 2.5
-  (nor does the current version of setuptools).  To install d2to1 on Python
-  2.5 you must have a version of setuptools installed that supports Python
-  2.5.
+  is needed.
 
 
 0.2.11 (2013-08-29)
