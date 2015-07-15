@@ -5,7 +5,11 @@ Changes
 0.2.12 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fixed a corner case where depending on the order of events when installing
+  multiple packages (i.e. when installing packages with dependencies, some
+  of which might also use d2to1) we would end up calling the incorrect
+  Distribution class (the patched version from setuptools, where d2to1
+  needs to get to the unpatched version from distutils for some cases).
 
 
 0.2.11 (2013-08-29)

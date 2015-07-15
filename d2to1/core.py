@@ -2,15 +2,10 @@ import os
 import sys
 import warnings
 
-from distutils.core import Distribution as _Distribution
 from distutils.errors import DistutilsFileError, DistutilsSetupError
-from setuptools.dist import _get_unpatched
 
 from .extern import six
 from .util import DefaultGetDict, IgnoreDict, cfg_to_args
-
-
-_Distribution = _get_unpatched(_Distribution)
 
 
 def d2to1(dist, attr, value):
@@ -30,6 +25,11 @@ def d2to1(dist, attr, value):
     will not play nicely with setup_requires; however, this implementation may
     not work well with distributions that do use a `Distribution` subclass.
     """
+
+    from distutils.core import Distribution
+    from setuptools.dist import _get_unpatched
+
+    _Distribution = _get_unpatched(Distribution)
 
     if not value:
         return
