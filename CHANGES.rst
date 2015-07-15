@@ -17,6 +17,10 @@ Changes
   version of ``six`` had a habit of fighting with other ``six`` instances
   over ``sys.modules``, which is fixed in newer versions).
 
+- Upgraded to latest ``ez_setup.py`` so that the most up to date version
+  of setuptools will be correctly bootstrapped in the rare cases that it
+  is needed.
+
 
 0.2.11 (2013-08-29)
 -------------------
