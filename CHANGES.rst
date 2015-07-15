@@ -21,6 +21,12 @@ Changes
   of setuptools will be correctly bootstrapped in the rare cases that it
   is needed.
 
+- Included some miscellaneous hacks to keep d2to1 working, nominally, with
+  Python 2.5 despite the broad move away from Python 2.5 support in the
+  Python community.  The d2to1 v0.2.x releases will be the last to continue
+  Python 2.5 support, given that testing it has become more difficult (and
+  the overhead is probably no longer worth it).
+
 
 0.2.11 (2013-08-29)
 -------------------
