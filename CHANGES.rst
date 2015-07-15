@@ -11,6 +11,12 @@ Changes
   Distribution class (the patched version from setuptools, where d2to1
   needs to get to the unpatched version from distutils for some cases).
 
+- Upgraded bundled copy of the ``six`` module to the current version
+  (1.9.0).  This fixes incompatibility between d2to1 and other packages
+  that import different versions of ``six`` during their setup (the older
+  version of ``six`` had a habit of fighting with other ``six`` instances
+  over ``sys.modules``, which is fixed in newer versions).
+
 
 0.2.11 (2013-08-29)
 -------------------
