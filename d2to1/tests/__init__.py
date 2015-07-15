@@ -7,6 +7,7 @@ import tempfile
 
 import pkg_resources
 
+from ..extern.six.moves import configparser
 from .util import rmtree, open_config
 
 
@@ -19,20 +20,28 @@ def fake_d2to1_dist():
     # in and make sure it's active on the path with the appropriate entry
     # points installed
 
+    # TODO: I can't exactly remember why this is needed as opposed to,
+    # say, actually building a d2to1 egg and activating it
+    cfg = configparser.ConfigParser()
+    cfg.read(os.path.join(D2TO1_DIR, 'setup.cfg'))
+    d2to1_version = cfg.get('metadata', 'version')
+
     class _FakeProvider(pkg_resources.EmptyProvider):
         """A fake metadata provider that does almost nothing except to return
         entry point metadata.
         """
 
         def has_metadata(self, name):
-            return name == 'entry_points.txt'
+            return name in ('entry_points.txt', 'PKG-INFO')
 
         def get_metadata(self, name):
             if name == 'entry_points.txt':
                 return '[distutils.setup_keywords]\nd2to1 = d2to1.core:d2to1\n'
+            elif name == 'PKG-INFO':
+                # This is needed just for Distribution.version
+                return 'Version: ' + d2to1_version
             else:
                 return ''
-
 
     sys.path.insert(0, D2TO1_DIR)
     if 'd2to1' in sys.modules:

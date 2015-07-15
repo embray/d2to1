@@ -5,7 +5,7 @@ import tarfile
 from . import D2to1TestCase
 
 
-VERSION = '0.1.dev'
+VERSION = '0.1.dev0'
 
 
 class TestCore(D2to1TestCase):
