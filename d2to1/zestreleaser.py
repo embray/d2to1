@@ -26,17 +26,54 @@ ConfigParser = m.configparser.ConfigParser
 logger = logging.getLogger(__name__)
 
 
+def prereleaser_before(data):
+    # This monkey-patches the BaseVersionControl system class to support
+    # getting and setting a version string from the setup.cfg file
+    from zest.releaser.vcs import BaseVersionControl
 
-def update_setupcfg_version(filename, version):
+    orig_extract_version = BaseVersionControl._extract_version
+    orig_update_version = BaseVersionControl._update_version
+
+    def _extract_version(self):
+        return get_setupcfg_version() or orig_extract_version(self)
+
+    def _update_version(self, version):
+        if get_setupcfg_version():
+            update_setupcfg_version(version)
+            return
+
+        return orig_update_version(self, version)
+
+    BaseVersionControl._extract_version = _extract_version
+    BaseVersionControl._update_version = _update_version
+    BaseVersionControl.version = property(_extract_version, _update_version)
+
+
+def get_setupcfg_version():
+    from zest.releaser.pypi import SetupConfig
+
+    setup_cfg = SetupConfig()
+
+    if setup_cfg.config.has_option('metadata', 'version'):
+        return setup_cfg.config.get('metadata', 'version').strip()
+
+    return ''
+
+
+def update_setupcfg_version(version):
     """Opens the given setup.cfg file, locates the version option in the
     [metadata] section, updates it to the new version.
     """
 
-    setup_cfg = open(filename).readlines()
+    from zest.releaser.pypi import SetupConfig
+
+    setup_cfg = SetupConfig()
+    filename = setup_cfg.config_filename
+    setup_cfg_lines = open(filename).readlines()
     current_section = None
     updated = False
 
-    for idx, line in enumerate(setup_cfg):
+    for idx, line in enumerate(setup_cfg_lines):
         m = ConfigParser.SECTCRE.match(line)
         if m:
             if current_section == 'metadata':
@@ -52,20 +89,14 @@ def update_setupcfg_version(filename, version):
         opt, val = line.split('=', 1)
         opt, val = opt.strip(), val.strip()
         if current_section == 'metadata' and opt == 'version':
-            setup_cfg[idx] = 'version = %s\n' % version
+            setup_cfg_lines[idx] = 'version = %s\n' % version
             updated = True
             break
 
     if updated:
-        open(filename, 'w').writelines(setup_cfg)
+        open(filename, 'w').writelines(setup_cfg_lines)
         logger.info("Set %s's version to %r" % (os.path.basename(filename),
                                                 version))
-
-
-def prereleaser_middle(data):
-    filename = os.path.join(data['workingdir'], 'setup.cfg')
-    if os.path.exists(filename):
-        update_setupcfg_version(filename, data['new_version'])
 
 
 def releaser_middle(data):
@@ -153,9 +184,3 @@ def postreleaser_before(data):
     """
 
     data['dev_version_template'] = '%(new_version)s.dev'
-
-
-def postreleaser_middle(data):
-    filename = os.path.join(data['workingdir'], 'setup.cfg')
-    if os.path.exists(filename):
-        update_setupcfg_version(filename, data['dev_version'])
