@@ -2,7 +2,7 @@ Changes
 =========
 
 
-0.2.12 (unreleased)
+0.2.12 (2015-07-16)
 -------------------
 
 - Fixed a corner case where depending on the order of events when installing
