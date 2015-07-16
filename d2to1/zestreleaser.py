@@ -162,7 +162,7 @@ def releaser_middle(data):
                 print_("Please create a tag for %s yourself and rerun." % \
                         (self.data['version'],))
                 sys.exit()
-        if not self.vcs.tag_exists('v' + self.data['version']):
+        if not self.vcs.tag_exists(self.data['version']):
             print_("\nFailed to create tag %s!" % (self.data['version'],))
             sys.exit()
 
